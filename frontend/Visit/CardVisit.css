@@ -1,0 +1,33 @@
+.card {
+    margin-top: 10px;
+    margin-left: 10px;
+    margin-right: 10px;
+    background-color: white;
+}
+
+.card .card_img {
+    display: block;
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+
+.card_body {
+    padding: 40px;
+
+}
+
+.card_title {
+    margin-top: 0;
+    margin-bottom: 20px;
+}
+
+.card_desc {
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+.card_desc {
+    margin-top: 0;
+    margin-bottom: 0;
+}

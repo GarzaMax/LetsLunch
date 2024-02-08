@@ -1,0 +1,71 @@
+.registration {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background: linear-gradient(
+            rgba(255, 255, 255, 0.6),
+            rgba(255, 255, 255, 0.3)
+    ),
+    url("https://vsememy.ru/kartinki/wp-content/uploads/2023/04/1675733420_papik-pro-p-risunok-kafe-vnutri-1.jpg");
+    background-size: cover;
+    background-position: center;
+}
+
+.registration form {
+    background: white;
+    padding: 00px 60px;
+    border-radius: 10px;
+}
+
+h1 {
+    color: #542200;
+    text-align: center;
+    font-size: 3rem;
+}
+
+h2 {
+    color: #542200;
+    text-align: center;
+    font-size: 2rem;
+}
+
+.numberPhone {
+    font-size: 1.3rem;
+}
+
+.in-website {
+    width : 110%;
+    text-align: center;
+    border: none;
+    background-color: bisque;
+    color: #542200;
+    border-radius: 5px;
+    font-weight: bold;
+    padding: 14px;
+    font-size: 18px;
+    cursor: pointer;
+}
+
+.login-button {
+    text-align: center;
+    background-color: white;
+    color: #542200;
+    font-weight: bold;
+    font-size: 18px;
+    cursor: pointer;
+    border: none;
+    margin-bottom: 15px;
+    height: 50px;
+    padding: 10px;
+}
+
+.Input {
+    display: inline-block;
+    width: 60%;
+    border-radius: 5px;
+    padding: 20px 70px;
+    text-align: center;
+    border: 1px solid lightgray;
+}
+

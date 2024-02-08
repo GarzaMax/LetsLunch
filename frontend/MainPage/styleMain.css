@@ -1,0 +1,88 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@200;300;400;600;700&display=swap');
+
+.Main {
+    background: linear-gradient(
+            rgba(255, 255, 255, 0.6),
+            rgba(255, 255, 255, 0.3)
+    ),
+    url("https://mozaic96.ru/uploadedFiles/eshopimages/big/8_540.jpg");
+    background-size: cover;
+    background-position: center;
+}
+
+.Main * {
+    font-family: 'Nunito', sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    text-transform: none; /* Изменено на none, так как capitalize было применено к всему тексту */
+    outline: none;
+    border: none;
+    text-decoration: none;
+    transition: all 0.2s linear;
+}
+
+html {
+    font-size: 62.5%;
+    overflow-x: hidden;
+    scroll-padding-top: 6rem;
+    scroll-behavior: smooth;
+}
+
+.Main header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: #2a1100;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 2rem 9%;
+}
+
+.Main {
+    height: 200rem;
+}
+
+.Main h2 {
+    margin-top: 7rem;
+    font-size: 3rem;
+    padding: 1rem;
+}
+
+.Main .event {
+    margin-top: 10px;
+    width : 100%;
+    height: 50px;
+    padding: 10px;
+    border: none;
+    background-color: bisque;
+    color: #542200;
+    border-radius: 5px;
+    font-weight: bold;
+    font-size: 18px;
+    cursor: pointer;
+    margin-bottom: 20px;
+}
+
+.list {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    column-gap: 10px;
+    row-gap: 40px;
+}
+
+@media (max-width: 500px) {
+    .list {
+        grid-template-columns: 1fr;
+    }
+}
+
+
+@media (max-width: 750px) {
+    .list {
+        grid-template-columns: 1fr 1fr;
+    }
+}

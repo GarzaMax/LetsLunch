@@ -1,0 +1,47 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@200;300;400;600;700&display=swap');
+
+header::selection {
+    background: orange;
+    color: #fff;
+}
+
+header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: #2a1100;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 2rem 9%;
+}
+
+header .logo {
+    font-size: 2.5rem;
+    font-weight: bolder;
+    color: #fff;
+    text-transform: uppercase;
+}
+
+header .logo h1 {
+    color: orange;
+    display: inline;
+}
+
+
+header .search-bar-container #label {
+    color: #fff;
+    cursor: pointer;
+}
+
+header .navbar a {
+    color: #fff;
+    font-size: 2rem;
+    margin:0.8rem;
+}
+
+header .navbar a:hover {
+    color:orange;
+}

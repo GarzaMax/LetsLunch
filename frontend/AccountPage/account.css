@@ -1,0 +1,121 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@200;300;400;600;700&display=swap');
+
+.account {
+    height: 100vh;
+    background: linear-gradient(
+            rgba(255, 255, 255, 0.6),
+            rgba(255, 255, 255, 0.3)
+    ),
+    url("https://mozaic96.ru/uploadedFiles/eshopimages/big/8_540.jpg");
+    background-size: cover;
+    background-position: center;
+    align-items: center;
+}
+
+.account * {
+    font-family: 'Nunito', sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    text-transform: none;
+    outline: none;
+    border: none;
+    text-decoration: none;
+    transition: all 0.2s linear;
+}
+
+.account header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: #2a1100;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 2rem 9%;
+}
+
+.account .book .row {
+    display: flex;
+    flex-wrap: wrap;
+    gap:1.5rem;
+    align-items: center;
+}
+
+.account .book {
+    text-align: center;
+    padding: 2.5rem 0;
+}
+
+.account .book .row .form {
+    margin-top: 2rem;
+    margin-right: 5rem;
+    margin-left: 5rem;
+    height: 48rem;
+    flex: 1 1 120rem; /* Увеличьте значение по вашему усмотрению */
+    padding: 2rem;
+    box-shadow: 0 1rem 2rem #542200;
+    border-color: #2a1100;
+    border-radius: 0.5rem;
+    background: white;
+}
+
+
+.account .book .row form .inputBox {
+    text-align: left;
+    margin-top: 1rem;
+    padding:.5rem 0;
+    border-color: #542200;
+}
+
+.account .book .heading {
+    margin-top: 12rem;
+    font-size: 3rem;
+    text-align: center;
+}
+
+.account .book .row form .inputBox input {
+    width: 30%; /* Уменьшьте значение по вашему усмотрению */
+    padding: 1rem;
+    border: 0.1rem solid #542200;
+    font-size: 1.7rem;
+    color: #542200;
+    text-transform: none;
+}
+
+.account .book .row form .inputBox .about {
+    width: 30%; /* Уменьшьте значение по вашему усмотрению */
+    height: 100px;
+    padding: 1rem;
+    border: 0.1rem solid #542200;
+    font-size: 1.7rem;
+    color: #542200;
+    text-transform: none;
+}
+
+.account .book .row form .inputBox .date {
+    color: #2a1100;
+    border: 0.1rem solid #542200;
+}
+
+.account .book .row form h3 {
+    font-size: 1.7rem;
+    margin-bottom: 1rem;
+}
+
+.account .book .row form .btn {
+    width : 20%;
+    height: 50px;
+    padding: 10px;
+    border: none;
+    background-color: bisque;
+    color: #542200;
+    border-radius: 5px;
+    font-weight: bold;
+    font-size: 18px;
+    cursor: pointer;
+    margin-top: 3rem;
+    margin-bottom: 50px;
+}
