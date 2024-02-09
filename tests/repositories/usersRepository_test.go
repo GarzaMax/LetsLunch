@@ -12,13 +12,24 @@ import (
 	"github.com/stretchr/testify/assert"
 	"slices"
 	"testing"
+	"time"
 )
+
+func AreUsersEqual(first *user.User, second *user.User) bool {
+	if (first.ID != second.ID) || (first.CurrentMeetingId != second.CurrentMeetingId) ||
+		(!time.Time.Equal(first.Birthday, second.Birthday)) || (first.PhoneNumber != second.PhoneNumber) ||
+		(first.Gender != second.Gender) || (!slices.Equal(first.MeetingHistory, second.MeetingHistory)) ||
+		(first.Rating != second.Rating) || (first.Username != second.Username) || (first.DisplayName != second.DisplayName) {
+		return false
+	}
+	return true
+}
 
 func TestCreatingUser(t *testing.T) {
 	//set up
 	var databaseUsersRepository = repository.NewUsersDatabaseRepository(db)
-	var currentUser = user.NewUser()
-	currentUser.Username = "Steve"
+	date, _ := time.Parse(time.DateOnly, "2003-04-16")
+	var currentUser = user.NewUser("Steve", "Steve13", date, "+79528123333", user.Male, []byte("1234567890"))
 	currentUser.Rating = 5
 	var ctx = context.Background()
 
@@ -33,7 +44,8 @@ func TestCreatingUser(t *testing.T) {
 	}
 
 	//testing equality of found and created entities
-	assert.Equal(t, currentUser, userFromRepository)
+	//assert.Equal(t, currentUser, userFromRepository)
+	assert.True(t, AreUsersEqual(currentUser, userFromRepository))
 	errDeleting := databaseUsersRepository.Delete(ctx, currentUser)
 	if errDeleting != nil {
 		t.Fatalf("Error in deleting user: %v", errDeleting)
@@ -43,21 +55,21 @@ func TestCreatingUser(t *testing.T) {
 func TestFindingByCriteriaUser(t *testing.T) {
 	//set up
 	var databaseUsersRepository = repository.NewUsersDatabaseRepository(db)
-	var firstUser = user.NewUser()
-	firstUser.Username = "Steve"
+	date, _ := time.Parse(time.DateOnly, "2003-04-16")
+	var firstUser = user.NewUser("Steve", "Steve13", date, "+79528123333", user.Male, []byte("1234567890"))
 	var ctx = context.Background()
 	_, errCreating := databaseUsersRepository.Create(ctx, firstUser)
 	if errCreating != nil {
 		t.Fatalf("Error in creating user: %v", errCreating)
 	}
-	var secondUser = user.NewUser()
-	secondUser.Username = "Masha"
+	date, _ = time.Parse(time.DateOnly, "2003-04-16")
+	var secondUser = user.NewUser("Masha", "Masha456767", date, "+79528123334", user.Female, []byte("1234567890"))
 	_, errCreating = databaseUsersRepository.Create(ctx, secondUser)
 	if errCreating != nil {
 		t.Fatalf("Error in creating user: %v", errCreating)
 	}
-	var thirdUser = user.NewUser()
-	thirdUser.Username = "Steve"
+	date, _ = time.Parse(time.DateOnly, "2003-04-16")
+	var thirdUser = user.NewUser("Steve", "Steve13", date, "+79528123332", user.Male, []byte("1234567890"))
 	_, errCreating = databaseUsersRepository.Create(ctx, thirdUser)
 	if errCreating != nil {
 		t.Fatalf("Error in creating user: %v", errCreating)
@@ -84,8 +96,8 @@ func TestFindingByCriteriaUser(t *testing.T) {
 	assert.True(t, slices.Contains(IDs, thirdUser.ID))
 	assert.False(t, slices.Contains(IDs, secondUser.ID))
 	//second - check equality of returned entity
-	assert.Equal(t, *firstUser, userFromRepostory)
-
+	//assert.Equal(t, *firstUser, userFromRepostory)
+	assert.True(t, AreUsersEqual(firstUser, &userFromRepostory))
 	errDeleting := databaseUsersRepository.Delete(ctx, firstUser)
 	errDeleting = databaseUsersRepository.Delete(ctx, secondUser)
 	errDeleting = databaseUsersRepository.Delete(ctx, thirdUser)
@@ -97,8 +109,8 @@ func TestFindingByCriteriaUser(t *testing.T) {
 func TestUpdatingUser(t *testing.T) {
 	//set up
 	var databaseUsersRepository = repository.NewUsersDatabaseRepository(db)
-	var currentUser = user.NewUser()
-	currentUser.DisplayName = "Katya14"
+	date, _ := time.Parse(time.DateOnly, "2003-04-16")
+	var currentUser = user.NewUser("Katya", "Katya14", date, "+79528123330", user.Female, []byte("1234567890"))
 	var ctx = context.Background()
 	_, errCreating := databaseUsersRepository.Create(ctx, currentUser)
 	if errCreating != nil {
@@ -106,9 +118,6 @@ func TestUpdatingUser(t *testing.T) {
 	}
 	//main part
 	currentUser.DisplayName = "Katya15"
-	currentUser.Username = "Katya"
-	currentUser.Age = 18
-	currentUser.Gender = user.Female
 	_, errUpdating := databaseUsersRepository.Update(ctx, currentUser)
 	if errUpdating != nil {
 		t.Fatalf("Error in updating user: %v", errUpdating)
@@ -120,17 +129,19 @@ func TestUpdatingUser(t *testing.T) {
 
 	//testing
 	//checking the equality of found and updated entity
-	assert.Equal(t, currentUser, userFromRepository)
+	//assert.Equal(t, currentUser, userFromRepository)
+	assert.True(t, AreUsersEqual(currentUser, userFromRepository))
 	errDeleting := databaseUsersRepository.Delete(ctx, currentUser)
 	if errDeleting != nil {
 		t.Fatalf("Error in deleting user: %v", errDeleting)
 	}
 }
 
-func TestDeletingGatheringUser(t *testing.T) {
+func TestDeletingUser(t *testing.T) {
 	//set up
 	var databaseUsersRepository = repository.NewUsersDatabaseRepository(db)
-	var currentUser = user.NewUser()
+	date, _ := time.Parse(time.DateOnly, "2003-04-16")
+	var currentUser = user.NewUser("@testUser", "Steve13", date, "+79528123333", user.Male, []byte("1234567890"))
 	var ctx = context.Background()
 	_, errCreating := databaseUsersRepository.Create(ctx, currentUser)
 	if errCreating != nil {

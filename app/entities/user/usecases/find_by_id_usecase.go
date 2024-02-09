@@ -1,25 +1,47 @@
 package usecases
 
 import (
-	domain "cmd/app/entities/meeting"
-	"cmd/app/entities/meeting/repository"
 	"context"
+	"time"
+
+	domain "cmd/app/entities/user"
+	"cmd/app/entities/user/repository"
 	"github.com/gofrs/uuid/v5"
 )
 
-type FindMeeting struct {
-	meetings repository.MeetingsRepository
+type FindUserByIdResponse struct {
+	ID               uuid.UUID     `json:"id"`
+	Username         string        `json:"username"`
+	DisplayName      string        `json:"displayName"`
+	CurrentMeetingID uuid.NullUUID `json:"currentMeetingId"`
+	MeetingHistory   []uuid.UUID   `json:"meetingHistory"`
+	Rating           int           `json:"rating"`
+	Birthday         time.Time     `json:"birthday"`
+	Gender           domain.Gender `json:"gender"`
 }
 
-func NewFindMeeting(meetings repository.MeetingsRepository) *FindMeeting {
-	return &FindMeeting{meetings: meetings}
+type FindUserByIdUseCase struct {
+	users repository.UsersRepository
 }
 
-func (f *FindMeeting) Handle(ctx context.Context, id uuid.UUID) (*domain.Meeting, error) {
-	entity, err := f.meetings.FindByID(ctx, id)
+func NewFindUserByIdUseCase(users repository.UsersRepository) *FindUserByIdUseCase {
+	return &FindUserByIdUseCase{users: users}
+}
+
+func (useCase *FindUserByIdUseCase) Handle(ctx context.Context, id uuid.UUID) (*FindUserByIdResponse, error) {
+	users, err := useCase.users.FindUserByID(ctx, id)
 	if err != nil {
 		return nil, err
 	}
 
-	return entity, nil
+	return &FindUserByIdResponse{
+		ID:               users.ID,
+		Username:         users.Username,
+		DisplayName:      users.DisplayName,
+		CurrentMeetingID: users.CurrentMeetingId,
+		MeetingHistory:   users.MeetingHistory,
+		Rating:           users.Rating,
+		Birthday:         users.Birthday,
+		Gender:           users.Gender,
+	}, nil
 }

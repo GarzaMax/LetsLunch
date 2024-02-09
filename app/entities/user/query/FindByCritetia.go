@@ -27,6 +27,9 @@ func FindUserByCriteria(ctx context.Context, criteria FindCriteria, db *sql.DB) 
 	if criteria.Gender.Valid != false {
 		sqlStatement = findUserByGender(sqlStatement, int(criteria.Gender.Int16))
 	}
+	if criteria.PhoneNumber.Valid != false {
+		sqlStatement = findUserByPhoneNumber(sqlStatement, criteria.PhoneNumber.String)
+	}
 	var rows, err = sqlStatement.Query()
 	if err != nil {
 		return nil, fmt.Errorf("database query execution error: %w", err)
@@ -43,13 +46,17 @@ func findUserByDisplayname(sql sq.SelectBuilder, displayname string) sq.SelectBu
 	return sql.Where(sq.Eq{"display_name": displayname})
 }
 func findUserByAge(sql sq.SelectBuilder, age int) sq.SelectBuilder {
-	return sql.Where(sq.Eq{"age": age})
+	return sql.Where(sq.Eq{"AGE(CURRENT_DATA, birthday)": age})
 	// вот здесь как раз можно дельту прикрутить для возраста
 }
 func findUserByGender(sql sq.SelectBuilder, gender int) sq.SelectBuilder {
 	return sql.Where(sq.Eq{"gender": gender})
 }
 
+func findUserByPhoneNumber(sql sq.SelectBuilder, phoneNumber string) sq.SelectBuilder {
+	return sql.Where(sq.Eq{"phone_number": phoneNumber})
+	// вот здесь как раз можно дельту прикрутить для возраста
+}
 func FindUserHistoryById(ctx context.Context, id uuid.UUID, db *sql.DB) (*sql.Rows, error) {
 	const query = "SELECT meeting_id FROM meetings_history WHERE user_id = $1"
 	rows, err := db.Query(query, id)

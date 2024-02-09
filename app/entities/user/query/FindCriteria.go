@@ -11,4 +11,5 @@ type FindCriteria struct {
 	CurrentMeetingId uuid.NullUUID
 	Age              sql.NullInt32
 	Gender           sql.NullInt16
+	PhoneNumber      sql.NullString
 }

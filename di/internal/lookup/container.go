@@ -5,13 +5,21 @@
 package lookup
 
 import (
+	"cmd/app/auth"
 	"cmd/app/config"
+	gathering_place_api "cmd/app/entities/gatheringPlace/api"
+	gathering_place_repository "cmd/app/entities/gatheringPlace/repository"
+	gathering_place_usecase "cmd/app/entities/gatheringPlace/usecases"
 	meeting_api "cmd/app/entities/meeting/api"
 	meeting_repository "cmd/app/entities/meeting/repository"
 	meeting_usecase "cmd/app/entities/meeting/usecases"
+	user_api "cmd/app/entities/user/api"
+	user_repository "cmd/app/entities/user/repository"
+	user_usecase "cmd/app/entities/user/usecases"
 	"context"
 	"database/sql"
 	chi "github.com/go-chi/chi/v5"
+	jwtauth "github.com/go-chi/jwtauth/v5"
 	"log"
 	"net/http"
 )
@@ -25,6 +33,8 @@ type Container interface {
 	DB(ctx context.Context) *sql.DB
 	Server(ctx context.Context) *http.Server
 	Router(ctx context.Context) *chi.Mux
+	TokenAuth(ctx context.Context) *jwtauth.JWTAuth
+	AuthConfig(ctx context.Context) *auth.AuthConfig
 
 	API() APIContainer
 	UseCases() UseCaseContainer
@@ -32,13 +42,45 @@ type Container interface {
 }
 
 type APIContainer interface {
-	FindMeetingHandler(ctx context.Context) *meeting_api.FindMeeting
+	CreateUserHandler(ctx context.Context) *user_api.CreateUserHandler
+	UpdateUserHandler(ctx context.Context) *user_api.UpdateUserHandler
+	DeleteUserHandler(ctx context.Context) *user_api.DeleteUserHandler
+	FindUserHandler(ctx context.Context) *user_api.FindUserByIdHandler
+	FindUsersHandler(ctx context.Context) *user_api.FindUsersByCriteriaHandler
+	GetTokenHandler(ctx context.Context) *user_api.GetTokenHandler
+	FindMeetingHandler(ctx context.Context) *meeting_api.FindMeetingByIdHandler
+	FindMeetingsHandler(ctx context.Context) *meeting_api.FindMeetingsByCriteriaHandler
+	CreateMeetingHandler(ctx context.Context) *meeting_api.CreateMeetingHandler
+	UpdateMeetingHandler(ctx context.Context) *meeting_api.UpdateMeetingHandler
+	DeleteMeetingHandler(ctx context.Context) *meeting_api.DeleteMeetingHandler
+	FindGatheringPlaceHandler(ctx context.Context) *gathering_place_api.FindGatheringPlaceByIdHandler
+	FindGatheringPlacesHandler(ctx context.Context) *gathering_place_api.FindGatheringPlacesByCriteriaHandler
+	CreateGatheringPlaceHandler(ctx context.Context) *gathering_place_api.CreateGatheringPlaceHandler
+	UpdateGatheringPlaceHandler(ctx context.Context) *gathering_place_api.UpdateGatheringPlaceHandler
+	DeleteGatheringPlaceHandler(ctx context.Context) *gathering_place_api.DeleteGatheringPlaceHandler
 }
 
 type UseCaseContainer interface {
-	FindMeeting(ctx context.Context) *meeting_usecase.FindMeeting
+	FindUser(ctx context.Context) *user_usecase.FindUserByIdUseCase
+	FindUsers(ctx context.Context) *user_usecase.FindUsersByCriteriaUseCase
+	CreateUser(ctx context.Context) *user_usecase.CreateUserUseCase
+	UpdateUser(ctx context.Context) *user_usecase.UpdateUserUseCase
+	DeleteUser(ctx context.Context) *user_usecase.DeleteUserUseCase
+	GetToken(ctx context.Context) *user_usecase.GetTokenUseCase
+	FindMeeting(ctx context.Context) *meeting_usecase.FindMeetingByIdUseCase
+	FindMeetings(ctx context.Context) *meeting_usecase.FindMeetingsByCriteriaUseCase
+	CreateMeeting(ctx context.Context) *meeting_usecase.CreateMeetingUseCase
+	UpdateMeeting(ctx context.Context) *meeting_usecase.UpdateMeetingUseCase
+	DeleteMeeting(ctx context.Context) *meeting_usecase.DeleteMeetingUseCase
+	FindGatheringPlace(ctx context.Context) *gathering_place_usecase.FindGatheringPlaceByIdUseCase
+	FindGatheringPlaces(ctx context.Context) *gathering_place_usecase.FindGatheringPlacesByCriteriaUseCase
+	CreateGatheringPlace(ctx context.Context) *gathering_place_usecase.CreateGatheringPlaceUseCase
+	UpdateGatheringPlace(ctx context.Context) *gathering_place_usecase.UpdateGatheringPlaceUseCase
+	DeleteGatheringPlace(ctx context.Context) *gathering_place_usecase.DeleteGatheringPlaceUseCase
 }
 
 type RepositoryContainer interface {
 	MeetingRepository(ctx context.Context) meeting_repository.MeetingsRepository
+	UserRepository(ctx context.Context) user_repository.UsersRepository
+	GatheringPlaceRepository(ctx context.Context) gathering_place_repository.PlacesRepository
 }

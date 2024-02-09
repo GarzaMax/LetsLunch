@@ -34,7 +34,7 @@ func (repository *UsersDatabaseRepository) FindUsersByCriteria(ctx context.Conte
 	}
 	var currentUser user.User
 	for rows.Next() {
-		if err = rows.Scan(&currentUser.ID, &currentUser.Username, &currentUser.DisplayName, &currentUser.Rating, &currentUser.Age, &currentUser.Gender, &currentUser.CurrentMeetingId); err != nil {
+		if err = rows.Scan(&currentUser.ID, &currentUser.Username, &currentUser.DisplayName, &currentUser.Rating, &currentUser.Gender, &currentUser.CurrentMeetingId, &currentUser.PhoneNumber, &currentUser.Birthday, &currentUser.HashedPassword); err != nil {
 			return nil, fmt.Errorf("cannot query the database %w", err)
 		}
 		users = append(users, currentUser)
@@ -55,7 +55,7 @@ func (repository *UsersDatabaseRepository) FindUsersByCriteria(ctx context.Conte
 func (repository *UsersDatabaseRepository) FindUserByID(ctx context.Context, id uuid.UUID) (*user.User, error) {
 	var currentUser user.User
 	row := query.FindUserByID(ctx, id, repository.db)
-	if err := row.Scan(&currentUser.ID, &currentUser.Username, &currentUser.DisplayName, &currentUser.Rating, &currentUser.Age, &currentUser.Gender, &currentUser.CurrentMeetingId); err != nil {
+	if err := row.Scan(&currentUser.ID, &currentUser.Username, &currentUser.DisplayName, &currentUser.Rating, &currentUser.Gender, &currentUser.CurrentMeetingId, &currentUser.PhoneNumber, &currentUser.Birthday); err != nil {
 		if errors.Is(err, sql.ErrNoRows) {
 			return nil, fmt.Errorf("no such user: %w", err)
 		}

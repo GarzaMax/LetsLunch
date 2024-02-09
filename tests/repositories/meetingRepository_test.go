@@ -21,7 +21,8 @@ import (
 )
 
 func setUpTestUser(t *testing.T, ctx context.Context) *user.User {
-	var testUser = user.NewUser()
+	date, _ := time.Parse(time.DateOnly, "2003-04-16")
+	var testUser = user.NewUser("@testUser", "Steve13", date, "+79528123333", user.Male, []byte("1234567890"))
 	var databaseUsersRepository = repository.NewUsersDatabaseRepository(db)
 	_, err := databaseUsersRepository.Create(ctx, testUser)
 	if err != nil {
@@ -31,7 +32,7 @@ func setUpTestUser(t *testing.T, ctx context.Context) *user.User {
 }
 
 func setUpTestPlace(t *testing.T, ctx context.Context) *gatheringPlace.GatheringPlace {
-	var testPlace = gatheringPlace.NewGatheringPlace()
+	var testPlace = gatheringPlace.NewGatheringPlace(testAddress, 500, gatheringPlace.FastFood, 5, "+781245422005", "", "", "")
 	var databasePlacesRepository = repositoryPlaces.NewPlacesDatabaseRepository(db)
 	_, err := databasePlacesRepository.Create(ctx, testPlace)
 	if err != nil {
@@ -46,10 +47,7 @@ func TestCreatingMeeting(t *testing.T) {
 	var testUser = setUpTestUser(t, ctx)
 	var testPlace = setUpTestPlace(t, ctx)
 	var databaseMeetingsRepository = repositoryMeetings.NewMeetingsDatabaseRepository(db)
-	var currentMeeting = meeting.NewMeeting()
-	currentMeeting.StartTime = time.Now().Round(time.Microsecond).UTC()
-	currentMeeting.InitiatorsId = testUser.ID
-	currentMeeting.GatheringPlaceId = testPlace.ID
+	var currentMeeting = meeting.NewMeeting(testPlace.ID, testUser.ID, time.Now().Round(time.Microsecond).UTC(), time.Now().Round(time.Microsecond).UTC().Add(time.Hour*2), 3, meeting.Active)
 	//main part
 	_, errCreating := databaseMeetingsRepository.Create(ctx, currentMeeting)
 	if errCreating != nil {
@@ -83,19 +81,13 @@ func TestFindingByCriteriaMeeting(t *testing.T) {
 	var testUser = setUpTestUser(t, ctx)
 	var testPlace = setUpTestPlace(t, ctx)
 	var databaseMeetingsRepository = repositoryMeetings.NewMeetingsDatabaseRepository(db)
-	var firstMeeting = meeting.NewMeeting()
-	firstMeeting.StartTime = time.Now().Round(time.Microsecond).UTC()
-	firstMeeting.InitiatorsId = testUser.ID
-	firstMeeting.GatheringPlaceId = testPlace.ID
+	var firstMeeting = meeting.NewMeeting(testPlace.ID, testUser.ID, time.Now().Round(time.Microsecond).UTC(), time.Now().Round(time.Microsecond).UTC().Add(time.Hour*2), 3, meeting.Active)
 	_, errCreating := databaseMeetingsRepository.Create(ctx, firstMeeting)
 	if errCreating != nil {
 		t.Fatalf("Error in creating place: %v", errCreating)
 	}
 	var anotherTestUser = setUpTestUser(t, ctx)
-	var secondMeeting = meeting.NewMeeting()
-	secondMeeting.StartTime = time.Now().Round(time.Microsecond).UTC()
-	secondMeeting.InitiatorsId = anotherTestUser.ID
-	secondMeeting.GatheringPlaceId = testPlace.ID
+	var secondMeeting = meeting.NewMeeting(testPlace.ID, anotherTestUser.ID, time.Now().Round(time.Microsecond).UTC(), time.Now().Round(time.Microsecond).UTC().Add(time.Hour*2), 3, meeting.Active)
 	_, errCreating = databaseMeetingsRepository.Create(ctx, secondMeeting)
 	if errCreating != nil {
 		t.Fatalf("Error in creating place: %v", errCreating)
@@ -132,10 +124,7 @@ func TestUpdatingMeeting(t *testing.T) {
 	var testUser = setUpTestUser(t, ctx)
 	var testPlace = setUpTestPlace(t, ctx)
 	var databaseMeetingsRepository = repositoryMeetings.NewMeetingsDatabaseRepository(db)
-	var firstMeeting = meeting.NewMeeting()
-	firstMeeting.StartTime = time.Now().Round(time.Microsecond).UTC()
-	firstMeeting.InitiatorsId = testUser.ID
-	firstMeeting.GatheringPlaceId = testPlace.ID
+	var firstMeeting = meeting.NewMeeting(testPlace.ID, testUser.ID, time.Now().Round(time.Microsecond).UTC(), time.Now().Round(time.Microsecond).UTC().Add(time.Hour*2), 3, meeting.Active)
 	_, errCreating := databaseMeetingsRepository.Create(ctx, firstMeeting)
 	if errCreating != nil {
 		t.Fatalf("Error in creating place: %v", errCreating)
@@ -166,10 +155,7 @@ func TestDeletingMeeting(t *testing.T) {
 	var testUser = setUpTestUser(t, ctx)
 	var testPlace = setUpTestPlace(t, ctx)
 	var databaseMeetingsRepository = repositoryMeetings.NewMeetingsDatabaseRepository(db)
-	var firstMeeting = meeting.NewMeeting()
-	firstMeeting.StartTime = time.Now().Round(time.Microsecond).UTC()
-	firstMeeting.InitiatorsId = testUser.ID
-	firstMeeting.GatheringPlaceId = testPlace.ID
+	var firstMeeting = meeting.NewMeeting(testPlace.ID, testUser.ID, time.Now().Round(time.Microsecond).UTC(), time.Now().Round(time.Microsecond).UTC().Add(time.Hour*2), 3, meeting.Active)
 	_, errCreating := databaseMeetingsRepository.Create(ctx, firstMeeting)
 	if errCreating != nil {
 		t.Fatalf("Error in creating place: %v", errCreating)

@@ -6,7 +6,7 @@
 .idea
 
 # Docker directories
-volumes/
+_volumes/
 
 # Binaries for programs and plugins
 *.exe

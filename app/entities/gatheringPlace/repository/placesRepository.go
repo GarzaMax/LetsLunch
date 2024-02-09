@@ -30,7 +30,8 @@ func (repository *PlacesDatabaseRepository) FindByID(ctx context.Context, id uui
 	var currentPlace gatheringPlace.GatheringPlace
 	row := query.FindByID(ctx, id, repository.db)
 	if err := row.Scan(&currentPlace.ID, &currentPlace.Address.Country, &currentPlace.Address.City, &currentPlace.Address.StreetName, &currentPlace.Address.HouseNumber, &currentPlace.Address.BuildingNumber,
-		&currentPlace.AveragePrice, &currentPlace.CuisineType, &currentPlace.Rating, &currentPlace.PhoneNumber); err != nil {
+		&currentPlace.AveragePrice, &currentPlace.CuisineType, &currentPlace.Rating, &currentPlace.PhoneNumber,
+		&currentPlace.Description, &currentPlace.PhotoLink, &currentPlace.Title); err != nil {
 		if errors.Is(err, sql.ErrNoRows) {
 			return nil, fmt.Errorf("no such gathering place: %w", err)
 		}
@@ -47,7 +48,8 @@ func (repository *PlacesDatabaseRepository) FindByCriteria(ctx context.Context, 
 	var currentPlace gatheringPlace.GatheringPlace
 	for rows.Next() {
 		if err = rows.Scan(&currentPlace.ID, &currentPlace.Address.Country, &currentPlace.Address.City, &currentPlace.Address.StreetName, &currentPlace.Address.HouseNumber, &currentPlace.Address.BuildingNumber,
-			&currentPlace.AveragePrice, &currentPlace.CuisineType, &currentPlace.Rating, &currentPlace.PhoneNumber); err != nil {
+			&currentPlace.AveragePrice, &currentPlace.CuisineType, &currentPlace.Rating, &currentPlace.PhoneNumber,
+			&currentPlace.Description, &currentPlace.PhotoLink, &currentPlace.Title); err != nil {
 			if errors.Is(err, sql.ErrNoRows) {
 				return nil, fmt.Errorf("no such gathering place: %w", err)
 			}

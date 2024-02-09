@@ -6,7 +6,9 @@ package di
 
 import (
 	"cmd/app/config"
+	gathering_place_repository "cmd/app/entities/gatheringPlace/repository"
 	meeting_repository "cmd/app/entities/meeting/repository"
+	user_repository "cmd/app/entities/user/repository"
 	"cmd/di/internal"
 	"context"
 	"net/http"
@@ -57,6 +59,22 @@ func (c *Container) Server(ctx context.Context) (*http.Server, error) {
 func SetMeetingRepository(s meeting_repository.MeetingsRepository) Injector {
 	return func(c *Container) error {
 		c.c.Repositories().(*internal.RepositoryContainer).SetMeetingRepository(s)
+
+		return nil
+	}
+}
+
+func SetUserRepository(s user_repository.UsersRepository) Injector {
+	return func(c *Container) error {
+		c.c.Repositories().(*internal.RepositoryContainer).SetUserRepository(s)
+
+		return nil
+	}
+}
+
+func SetGatheringPlaceRepository(s gathering_place_repository.PlacesRepository) Injector {
+	return func(c *Container) error {
+		c.c.Repositories().(*internal.RepositoryContainer).SetGatheringPlaceRepository(s)
 
 		return nil
 	}

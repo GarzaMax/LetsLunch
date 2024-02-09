@@ -7,8 +7,11 @@ import (
 )
 
 type FindCriteria struct {
+	OnlyCity    sql.NullString
 	Address     *models.Address
 	InitiatorID uuid.NullUUID
 	CuisineType sql.NullInt16
 	Rating      int
+	PhoneNumber sql.NullString
+	Title       sql.NullString
 }
